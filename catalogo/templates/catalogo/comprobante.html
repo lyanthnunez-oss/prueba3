@@ -1,0 +1,22 @@
+{% extends 'catalogo/base.html' %}
+{% load formato_clp %}
+
+{% block content %}
+<div class="card mx-auto" style="max-width: 600px;">
+    <div class="card-header bg-success text-white">
+        <h4 class="mb-0">✅ Comprobante de Pedido</h4>
+    </div>
+    <div class="card-body">
+        <p><strong>Código de pedido:</strong> {{ pedido.codigo }}</p>
+        <p><strong>Juego:</strong> {{ pedido.juego.nombre }}</p>
+        <p><strong>Cliente:</strong> {{ pedido.nombre_cliente }}</p>
+        <p><strong>Cantidad:</strong> {{ pedido.cantidad }} unidad(es)</p>
+        <p><strong>Fecha y hora:</strong> {{ pedido.fecha_hora|date:"d/m/Y H:i" }}</p>
+        <hr>
+        <h4 class="text-end">Total: {{ pedido.total|clp }}</h4>
+    </div>
+    <div class="card-footer text-center">
+        <a href="{% url 'inicio' %}" class="btn btn-primary">Volver al catálogo</a>
+    </div>
+</div>
+{% endblock %}
