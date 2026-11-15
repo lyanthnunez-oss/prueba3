@@ -1,0 +1,45 @@
+{% extends 'catalogo/base.html' %}
+{% load formato_clp %}
+
+{% block content %}
+<h2 class="mb-3">Catálogo de Juegos</h2>
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-5">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Buscar juego por nombre...">
+    </div>
+    <div class="col-md-4">
+        <select name="categoria" class="form-select">
+            <option value="">Todas las categorías</option>
+            {% for cat in categorias %}
+                <option value="{{ cat.id }}" {% if cat_seleccionada == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+</form>
+
+<div class="row">
+    {% for juego in juegos %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ juego.imagen.url }}" class="card-img-top" style="height: 220px; object-fit: cover;" alt="{{ juego.nombre }}">
+            <div class="card-body">
+                <span class="badge bg-secondary mb-1">{{ juego.categoria.nombre }}</span>
+                <h5 class="card-title">{{ juego.nombre }}</h5>
+                <p class="fw-bold text-success fs-5">{{ juego.precio|clp }}</p>
+                {% if juego.stock == 0 %}
+                    <span class="badge bg-danger">Agotado</span>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{% url 'detalle_juego' juego.id %}" class="btn btn-outline-primary w-100">Ver detalle</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No se encontraron juegos disponibles.</p>
+    {% endfor %}
+</div>
+{% endblock %}
